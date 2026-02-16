@@ -1,0 +1,593 @@
+/* pages/home/home.wxss */
+page {
+  background: #f5f5f5;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  box-sizing: border-box;
+}
+
+/* 顶部Banner区域 */
+.header-banner {
+  width: 100%;
+  height: 400rpx;
+  position: relative;
+  overflow: hidden;
+}
+
+.banner-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.banner-content {
+  position: absolute;
+  right: 40rpx;
+  top: 50%;
+  transform: translateY(-50%);
+  text-align: right;
+  z-index: 1;
+}
+
+.banner-slogan {
+  display: block;
+  font-size: 28rpx;
+  color: #333;
+  font-style: italic;
+}
+
+.banner-title {
+  display: block;
+  font-size: 56rpx;
+  font-weight: bold;
+  color: #1a3a5c;
+  margin: 8rpx 0;
+}
+
+.banner-subtitle {
+  display: block;
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #1a3a5c;
+}
+
+/* 用户信息区域 */
+.user-section {
+  display: flex;
+  align-items: center;
+  width: 98%;
+  padding: 0 30rpx 30rpx;
+  background: #fff;
+  margin-top: -60rpx;
+  padding-top: 20rpx;
+  position: relative;
+  box-sizing: border-box;
+  border-radius: 24rpx;
+}
+
+.user-avatar-wrap {
+  width: 140rpx;
+  height: 140rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 6rpx solid #fff;
+  box-shadow: 0 4rpx 12rpx rgba(0,0,0,0.1);
+  margin-top: -70rpx;
+  background: #f0f0f0;
+  flex-shrink: 0;
+}
+
+.user-avatar-img {
+  width: 100%;
+  height: 100%;
+}
+
+.user-avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 60rpx;
+  background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+}
+
+.user-info-wrap {
+  flex: 1;
+  margin-left: 24rpx;
+  padding-top: 10rpx;
+}
+
+.user-nickname {
+  display: block;
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.user-likes {
+  display: block;
+  font-size: 26rpx;
+  color: #999;
+  margin-top: 8rpx;
+}
+
+.edit-profile-btn {
+  padding: 12rpx 32rpx;
+  font-size: 26rpx;
+  color: #666;
+  background: #fff;
+  border: 2rpx solid #ddd;
+  border-radius: 30rpx;
+  line-height: 1.5;
+}
+
+.edit-profile-btn::after {
+  border: none;
+}
+
+.login-btn-small {
+  padding: 18rpx 0rpx;
+  font-size: 24rpx;
+  color: #fff;
+  background: linear-gradient(135deg, #00b4d8 0%, #0096c7 100%);
+  border-radius: 20rpx;
+  line-height: 1.5;
+}
+
+.login-btn-small::after {
+  border: none;
+}
+
+/* 球局列表区域 - 铺满剩余空间 */
+.game-section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  width: 86%;
+  margin: 20rpx auto 0;
+  background: #fff;
+  border-radius: 24rpx;
+  padding: 24rpx 0;
+  padding-bottom: calc(24rpx + env(safe-area-inset-bottom));
+  box-sizing: border-box;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20rpx;
+  padding: 0 24rpx 16rpx;
+  border-bottom: 1rpx solidrgb(188, 188, 188);
+}
+
+.section-title {
+  font-size: 32rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.section-count {
+  font-size: 26rpx;
+  color: #00b4d8;
+  padding: 4rpx 16rpx;
+  background: rgba(0,180,216,0.1);
+  border-radius: 20rpx;
+}
+
+/* 球局滚动列表 - 自适应高度 */
+.game-scroll {
+  flex: 1;
+  min-height: 0;
+  padding: 0 30rpx;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.game-item-wrap {
+  position: relative;
+  margin-bottom: 16rpx;
+  overflow: hidden;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.delete-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 140rpx;
+  background: #ff4d4f;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28rpx;
+  border-radius: 12rpx;
+}
+
+.game-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx;
+  background: #f8f9fa;
+  border-radius: 12rpx;
+  position: relative;
+  z-index: 1;
+  transition: transform 0.2s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.game-info {
+  flex: 1;
+}
+
+.game-name {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8rpx;
+}
+
+.game-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4rpx;
+}
+
+.game-location, .game-time {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.game-right {
+  text-align: right;
+}
+
+.game-status {
+  display: block;
+  font-size: 24rpx;
+  padding: 4rpx 12rpx;
+  border-radius: 16rpx;
+  margin-bottom: 8rpx;
+}
+
+.game-status.waiting {
+  background: rgba(250,173,20,0.1);
+  color: #faad14;
+}
+
+.game-status.playing {
+  background: rgba(0,180,216,0.1);
+  color: #00b4d8;
+}
+
+.game-status.finished {
+  background: rgba(153,153,153,0.1);
+  color: #999;
+}
+
+.game-players {
+  font-size: 24rpx;
+  color: #666;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60rpx 24rpx;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 30rpx;
+}
+
+.empty-btn {
+  background: linear-gradient(135deg, #00b4d8 0%, #0096c7 100%);
+  color: #fff;
+  font-size: 28rpx;
+  padding: 20rpx 60rpx;
+  border-radius: 40rpx;
+  border: none;
+}
+
+.empty-btn::after {
+  border: none;
+}
+
+/* 创建球局按钮 */
+.create-game-btn {
+  width: 90%;
+  margin: 20rpx auto;
+  background: linear-gradient(135deg, #00b4d8 0%, #0096c7 100%);
+  color: #fff;
+  font-size: 28rpx;
+  padding: 20rpx 0;
+  border-radius: 40rpx;
+  border: none;
+  text-align: center;
+}
+
+.create-game-btn::after {
+  border: none;
+}
+
+/* 按钮组 */
+.btn-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16rpx;
+  padding: 20rpx 0;
+}
+
+/* 测试球局按钮 */
+.test-game-btn {
+  width: 90%;
+  background: #f5f5f5;
+  color: #666;
+  font-size: 26rpx;
+  padding: 16rpx 0;
+  border-radius: 40rpx;
+  border: none;
+  text-align: center;
+}
+
+.test-game-btn::after {
+  border: none;
+}
+
+/* 登录行 */
+.login-row {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+/* 登录底部弹窗 */
+.login-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+.login-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 0 40rpx 60rpx;
+  padding-bottom: calc(60rpx + env(safe-area-inset-bottom));
+  z-index: 1000;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.login-sheet.show {
+  transform: translateY(0);
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.sheet-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.sheet-close {
+  font-size: 40rpx;
+  color: #999;
+  line-height: 1;
+}
+
+.sheet-body {
+  padding: 20rpx 0;
+}
+
+/* 登录项 */
+.login-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.login-label {
+  font-size: 26rpx;
+  color: #333;
+  width: 80rpx;
+  flex-shrink: 0;
+}
+
+.avatar-choose-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+}
+
+.avatar-choose-btn::after {
+  border: none;
+}
+
+.avatar-preview {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+}
+
+.avatar-placeholder-sm {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 36rpx;
+}
+
+.item-hint {
+  font-size: 24rpx;
+  color: #00b4d8;
+  margin-left: 16rpx;
+}
+
+.nickname-wrap {
+  flex: 1;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.nickname-input-visible {
+  width: 300rpx;
+  height: 64rpx;
+  background: #f5f5f5;
+  border-radius: 32rpx;
+  padding: 0 24rpx;
+  font-size: 24rpx;
+  text-align: right;
+}
+
+.sheet-confirm-btn {
+  width: 100%;
+  height: 80rpx;
+  background: linear-gradient(135deg, #00b4d8 0%, #0096c7 100%);
+  color: #fff;
+  font-size: 28rpx;
+  font-weight: 500;
+  border-radius: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20rpx;
+}
+
+.sheet-confirm-btn::after {
+  border: none;
+}
+
+/* 创建球局弹窗 */
+.create-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+.create-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 0 40rpx 60rpx;
+  padding-bottom: calc(60rpx + env(safe-area-inset-bottom));
+  z-index: 1000;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.create-sheet.show {
+  transform: translateY(0);
+}
+
+.create-form {
+  padding: 20rpx 0;
+}
+
+.form-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.form-label {
+  font-size: 30rpx;
+  color: #333;
+  flex-shrink: 0;
+}
+
+.form-input {
+  flex: 1;
+  text-align: right;
+  font-size: 30rpx;
+  color: #333;
+  margin-left: 20rpx;
+}
+
+.form-input .placeholder {
+  color: #999;
+}
+
+.location-input {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 20rpx;
+}
+
+.stepper-btn {
+  width: 56rpx;
+  height: 56rpx;
+  background: #f5f5f5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+  color: #333;
+}
+
+.stepper-value {
+  font-size: 32rpx;
+  color: #333;
+  min-width: 60rpx;
+  text-align: center;
+}

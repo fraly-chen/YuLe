@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "球局列表",
+  "navigationBarBackgroundColor": "#667eea",
+  "navigationBarTextStyle": "white",
+  "enablePullDownRefresh": true,
+  "backgroundTextStyle": "light"
+}

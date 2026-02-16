@@ -1,0 +1,84 @@
+<view class="container">
+  <!-- 前三名领奖台 -->
+  <view class="podium" wx:if="{{ranking.length >= 1}}">
+    <!-- 第二名 -->
+    <view class="podium-item second" wx:if="{{ranking[1]}}">
+      <view class="medal-icon">🥈</view>
+      <view class="player-avatar-wrap">
+        <image class="player-avatar-large" src="{{ranking[1].avatarUrl}}" wx:if="{{ranking[1].avatarUrl}}"></image>
+        <view class="avatar-placeholder" wx:else>👤</view>
+      </view>
+      <text class="player-name-large">{{ranking[1].nickName}}</text>
+      <view class="player-stats-large">
+        <text class="stat-item">{{ranking[1].wins}}胜 {{ranking[1].losses}}负</text>
+        <text class="stat-rate">{{ranking[1].winRateText}}</text>
+      </view>
+    </view>
+
+    <!-- 第一名 -->
+    <view class="podium-item first" wx:if="{{ranking[0]}}">
+      <view class="crown-icon">👑</view>
+      <view class="medal-icon gold">🥇</view>
+      <view class="player-avatar-wrap champion">
+        <image class="player-avatar-large" src="{{ranking[0].avatarUrl}}" wx:if="{{ranking[0].avatarUrl}}"></image>
+        <view class="avatar-placeholder" wx:else>👤</view>
+      </view>
+      <text class="player-name-large champion">{{ranking[0].nickName}}</text>
+      <view class="player-stats-large">
+        <text class="stat-item">{{ranking[0].wins}}胜 {{ranking[0].losses}}负</text>
+        <text class="stat-rate champion">{{ranking[0].winRateText}}</text>
+      </view>
+    </view>
+
+    <!-- 第三名 -->
+    <view class="podium-item third" wx:if="{{ranking[2]}}">
+      <view class="medal-icon">🥉</view>
+      <view class="player-avatar-wrap">
+        <image class="player-avatar-large" src="{{ranking[2].avatarUrl}}" wx:if="{{ranking[2].avatarUrl}}"></image>
+        <view class="avatar-placeholder" wx:else>👤</view>
+      </view>
+      <text class="player-name-large">{{ranking[2].nickName}}</text>
+      <view class="player-stats-large">
+        <text class="stat-item">{{ranking[2].wins}}胜 {{ranking[2].losses}}负</text>
+        <text class="stat-rate">{{ranking[2].winRateText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 完整排名列表 -->
+  <view class="ranking-list" wx:if="{{ranking.length > 3}}">
+    <view class="list-header">
+      <text class="header-text">完整排名</text>
+    </view>
+    
+    <view class="ranking-item" wx:for="{{ranking}}" wx:key="openid" wx:if="{{index >= 3}}">
+      <view class="rank-number-normal">{{item.rank}}</view>
+      <view class="player-avatar-small-wrap">
+        <image class="player-avatar" src="{{item.avatarUrl}}" wx:if="{{item.avatarUrl}}"></image>
+        <view class="avatar-placeholder-small" wx:else>👤</view>
+      </view>
+      <text class="player-name">{{item.nickName}}</text>
+      <view class="player-stats">
+        <text class="stat-text">{{item.playCount}}场</text>
+        <text class="stat-text">{{item.wins}}胜</text>
+        <text class="stat-text win-rate">{{item.winRateText}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty-state" wx:if="{{ranking.length === 0}}">
+    <text class="empty-icon">📊</text>
+    <text class="empty-text">暂无排名数据</text>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="bottom-actions">
+    <button class="action-button secondary" open-type="share">
+      📤 分享成绩
+    </button>
+    <button class="action-button primary" bindtap="onBackHome">
+      🏠 返回首页
+    </button>
+  </view>
+</view>

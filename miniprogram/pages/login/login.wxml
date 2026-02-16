@@ -1,0 +1,25 @@
+<view class="container">
+  <view class="login-card">
+    <image class="logo" src="/images/logo.png"></image>
+    <text class="app-name">羽乐宝</text>
+    <text class="app-slogan">智能羽毛球轮转助手</text>
+    
+    <button class="login-button" bindtap="onWxLogin" wx:if="{{!userInfo}}">
+      <image class="wx-icon" src="/images/wx-icon.png"></image>
+      微信快捷登录
+    </button>
+
+    <view class="user-info-section" wx:if="{{userInfo}}">
+      <image class="avatar-large" src="{{userInfo.avatarUrl}}"></image>
+      <text class="welcome-text">欢迎,{{userInfo.nickName}}</text>
+      <button class="continue-btn" bindtap="onContinue">继续使用</button>
+    </view>
+
+    <view class="tips">
+      <text class="tip-text">登录即表示同意</text>
+      <text class="link-text">《用户协议》</text>
+      <text class="tip-text">和</text>
+      <text class="link-text">《隐私政策》</text>
+    </view>
+  </view>
+</view>

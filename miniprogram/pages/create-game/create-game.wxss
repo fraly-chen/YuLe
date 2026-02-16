@@ -1,0 +1,198 @@
+/* pages/create-game/create-game.wxss */
+page {
+  background: #ffffff;
+}
+
+.container {
+  padding: 30rpx;
+  padding-bottom: 60rpx;
+}
+
+.form-card {
+  background: #fff;
+  border-radius: 24rpx;
+  overflow: hidden;
+}
+
+.form-header {
+  background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+  padding: 50rpx 40rpx;
+  text-align: center;
+}
+
+.header-title {
+  display: block;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 12rpx;
+}
+
+.header-subtitle {
+  display: block;
+  font-size: 26rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.form-content {
+  padding: 40rpx 30rpx;
+}
+
+.form-item {
+  margin-bottom: 40rpx;
+}
+
+.item-label {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20rpx;
+}
+
+.label-text {
+  font-size: 30rpx;
+  color: #333;
+  font-weight: 500;
+}
+
+.required {
+  color: #f56c6c;
+  margin-left: 8rpx;
+  font-size: 32rpx;
+}
+
+.item-input {
+  width: 100%;
+  height: 80rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+}
+
+.char-count {
+  display: block;
+  text-align: right;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 12rpx;
+}
+
+.location-picker, .time-picker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 80rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+}
+
+.location-text, .time-text {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.placeholder-text {
+  flex: 1;
+  font-size: 28rpx;
+  color: #999;
+}
+
+.location-icon, .arrow-icon {
+  width: 32rpx;
+  height: 32rpx;
+  margin-left: 16rpx;
+}
+
+.number-selector {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40rpx;
+}
+
+.num-btn {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+  color: #fff;
+  font-size: 40rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+}
+
+.num-value {
+  font-size: 32rpx;
+  color: #333;
+  font-weight: bold;
+  min-width: 120rpx;
+  text-align: center;
+}
+
+.hint-text {
+  display: block;
+  text-align: center;
+  font-size: 24rpx;
+  color: #999;
+  margin-top: 16rpx;
+}
+
+.court-info {
+  display: flex;
+  align-items: center;
+  height: 80rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+}
+
+.court-number {
+  font-size: 28rpx;
+  color: #00b4d8;
+  font-weight: bold;
+  margin-right: 16rpx;
+}
+
+.court-hint {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.item-textarea {
+  width: 100%;
+  min-height: 160rpx;
+  background: #f5f5f5;
+  border-radius: 12rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+}
+
+.button-group {
+  display: flex;
+  padding: 30rpx;
+  gap: 24rpx;
+}
+
+.cancel-btn, .create-btn {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 44rpx;
+  font-size: 32rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cancel-btn {
+  background: #f5f5f5;
+  color: #666;
+}
+
+.create-btn {
+  background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+  color: #fff;
+}

@@ -1,0 +1,179 @@
+<view class="container">
+
+  <!-- 球局状态卡片 -->
+  <view class="status-card {{gameInfo.status}}">
+    <view class="status-content">
+      <text class="status-label">球局状态</text>
+      <text class="status-value">{{statusTextMap[gameInfo.status]}}</text>
+      <!-- 预计轮数 -->
+      <view class="round-formula" wx:if="{{gameInfo.status === 'waiting'}}">
+        <text class="formula-text">预计 {{estimatedRounds}} 轮</text>
+        <text class="formula-detail">C({{formulaN}},2)÷2</text>
+      </view>
+      <view class="location-info" wx:if="{{gameInfo.location}}">
+        <view class="location-pin">📍</view>
+        <text class="location-text">{{gameInfo.location}}</text>
+      </view>
+    </view>
+    <view class="player-count">
+      <text class="count-number">{{participants.length}}/{{gameInfo.maxPlayers || 8}}</text>
+      <text class="count-label">人已加入</text>
+      <text class="count-full" wx:if="{{participants.length >= (gameInfo.maxPlayers || 8)}}">已满</text>
+    </view>
+  </view>
+
+  <!-- 参与人员 -->
+  <view class="participants-section">
+    <view class="section-header">
+      <text class="section-title">参与人员 ({{participants.length}}/{{gameInfo.maxPlayers || 8}}人)</text>
+      <button 
+        wx:if="{{gameInfo.status === 'waiting' && isCreator && participants.length >= 4}}" 
+        class="start-btn" 
+        bindtap="onStartGame"
+      >
+        开始轮转
+      </button>
+    </view>
+    <view class="participants-grid">
+      <!-- 已参与人员 -->
+      <view class="participant-item" wx:for="{{participants}}" wx:key="openid">
+        <view class="participant-avatar-wrap">
+          <image class="participant-avatar" src="{{item.avatarUrl}}" wx:if="{{item.avatarUrl}}"></image>
+          <view class="participant-avatar-placeholder" wx:else>👤</view>
+        </view>
+        <view class="participant-info">
+          <text class="participant-name">{{item.nickName}}</text>
+          <text class="participant-extra">
+            <text class="gender-icon {{item.gender === 1 ? 'male' : 'female'}}">{{item.gender === 1 ? '♂' : '♀'}}</text>
+            <text class="level-tag">{{item.level || 'L3'}}</text>
+          </text>
+        </view>
+        <view class="creator-tag" wx:if="{{item.isCreator}}">组织者</view>
+      </view>
+      <!-- 空位（虚位以待） -->
+      <view class="participant-item empty-slot" wx:for="{{emptySlots}}" wx:key="index" wx:if="{{gameInfo.status === 'waiting'}}">
+        <view class="participant-avatar-wrap empty">
+          <view class="empty-avatar-icon">➕</view>
+        </view>
+        <view class="participant-info">
+          <text class="participant-name empty-text">虚位以待</text>
+        </view>
+      </view>
+    </view>
+    <!-- 退出球局按钮 - 非创建者且未开始时显示 -->
+    <button 
+      wx:if="{{gameInfo.status === 'waiting' && !isCreator && hasJoined}}" 
+      class="leave-btn" 
+      bindtap="onLeaveGame"
+    >
+      退出球局
+    </button>
+  </view>
+
+  <!-- 当前场次 (进行中状态) -->
+  <view class="current-round-section" wx:if="{{gameInfo.status === 'playing'}}">
+    <!-- 轮次导航 -->
+    <view class="round-nav">
+      <button 
+        class="nav-btn prev {{currentRound <= 1 ? 'disabled' : ''}}" 
+        bindtap="onPrevRound"
+        disabled="{{currentRound <= 1}}"
+      >
+        ‹ 上一轮
+      </button>
+      <view class="round-indicator">
+        <text class="round-current">第 {{currentRound}} 轮</text>
+        <text class="round-total">/ 共 {{totalRounds}} 轮</text>
+      </view>
+      <button 
+        class="nav-btn next {{currentRound >= totalRounds ? 'disabled' : ''}}" 
+        bindtap="onNextRound"
+        disabled="{{currentRound >= totalRounds}}"
+      >
+        下一轮 ›
+      </button>
+    </view>
+
+    <!-- 本轮所有对局 -->
+    <view class="matches-list">
+      <view class="match-card" wx:for="{{currentRoundMatches}}" wx:key="index" wx:for-index="matchIndex">
+        <view class="court-label">场地 {{item.courtId}}</view>
+        
+        <view class="match-content">
+          <!-- 队伍1 - 点击选择胜方 -->
+          <view 
+            class="team-side {{item.result && item.result.winner === 'team1' ? 'winner' : ''}} {{!item.result ? 'clickable' : ''}}"
+            bindtap="onSelectWinner"
+            data-match-index="{{matchIndex}}"
+            data-winner="team1"
+          >
+            <view class="player-row" wx:for="{{item.team1}}" wx:for-item="player" wx:key="openid">
+              <view class="player-avatar-small">
+                <image src="{{player.avatarUrl}}" wx:if="{{player.avatarUrl}}"></image>
+                <text wx:else>👤</text>
+              </view>
+              <text class="player-name-small">{{player.nickName}}</text>
+              <text class="player-tag">{{player.gender === 1 ? '♂' : '♀'}}{{player.level || 'L3'}}</text>
+            </view>
+            <view class="win-badge" wx:if="{{item.result && item.result.winner === 'team1'}}">🏆 胜</view>
+            <view class="tap-hint" wx:if="{{!item.result}}">点击选胜</view>
+          </view>
+          
+          <!-- VS -->
+          <view class="vs-divider">
+            <text class="vs-text">VS</text>
+          </view>
+          
+          <!-- 队伍2 - 点击选择胜方 -->
+          <view 
+            class="team-side {{item.result && item.result.winner === 'team2' ? 'winner' : ''}} {{!item.result ? 'clickable' : ''}}"
+            bindtap="onSelectWinner"
+            data-match-index="{{matchIndex}}"
+            data-winner="team2"
+          >
+            <view class="player-row" wx:for="{{item.team2}}" wx:for-item="player" wx:key="openid">
+              <view class="player-avatar-small">
+                <image src="{{player.avatarUrl}}" wx:if="{{player.avatarUrl}}"></image>
+                <text wx:else>👤</text>
+              </view>
+              <text class="player-name-small">{{player.nickName}}</text>
+              <text class="player-tag">{{player.gender === 1 ? '♂' : '♀'}}{{player.level || 'L3'}}</text>
+            </view>
+            <view class="win-badge" wx:if="{{item.result && item.result.winner === 'team2'}}">🏆 胜</view>
+            <view class="tap-hint" wx:if="{{!item.result}}">点击选胜</view>
+          </view>
+        </view>
+        
+        <!-- 已记录状态 -->
+        <view class="match-status" wx:if="{{item.result}}">
+          <text class="status-done">✓ 已记录</text>
+        </view>
+      </view>
+    </view>
+
+    <!-- 轮空玩家提示 -->
+    <view class="rest-players" wx:if="{{restPlayers.length > 0}}">
+      <text class="rest-title">☕ 本轮轮空: </text>
+      <text class="rest-names">{{restPlayers}}</text>
+    </view>
+
+    <!-- 操作按钮 -->
+    <view class="round-actions" wx:if="{{isCreator && allMatchesFinished && currentRound === totalRounds}}">
+      <button 
+        class="end-game-btn" 
+        bindtap="onEndGame"
+      >
+        结束球局 查看统计
+      </button>
+    </view>
+  </view>
+
+  <!-- 已结束状态 -->
+  <view class="finished-section" wx:if="{{gameInfo.status === 'finished'}}">
+    <view class="finished-header">
+      <text class="finished-icon">🏆</text>
+      <text class="finished-title">球局已结束</text>
+    </view>
+    <button class="view-ranking-btn" bindtap="onViewRanking">查看最终排名</button>
+  </view>
+</view>

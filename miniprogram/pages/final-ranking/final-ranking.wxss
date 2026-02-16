@@ -1,0 +1,319 @@
+/* pages/final-ranking/final-ranking.wxss */
+page {
+  background: #ffffff;
+  min-height: 100vh;
+}
+
+.container {
+  padding-bottom: 40rpx;
+}
+
+/* 头部 */
+.header {
+  position: relative;
+  padding: 60rpx 30rpx 40rpx;
+  text-align: center;
+  background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+}
+
+.header-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.1;
+}
+
+.header-content {
+  position: relative;
+  z-index: 1;
+}
+
+.trophy-icon {
+  font-size: 80rpx;
+  display: block;
+  margin-bottom: 20rpx;
+}
+
+.game-name {
+  display: block;
+  font-size: 40rpx;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 16rpx;
+}
+
+.subtitle {
+  display: block;
+  font-size: 28rpx;
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.stats-info {
+  display: block;
+  font-size: 24rpx;
+  color: rgba(255, 255, 255, 0.7);
+  margin-top: 12rpx;
+}
+
+/* 领奖台 */
+.podium {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 20rpx 30rpx;
+  gap: 16rpx;
+}
+
+.podium-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20rpx;
+  padding: 20rpx 16rpx;
+  position: relative;
+  box-shadow: 0 6rpx 16rpx rgba(0, 0, 0, 0.12);
+}
+
+.podium-item.first {
+  flex: 1.2;
+  padding-top: 30rpx;
+  margin-bottom: 20rpx;
+}
+
+.podium-item.second {
+  margin-bottom: 10rpx;
+}
+
+.crown-icon {
+  position: absolute;
+  top: -30rpx;
+  font-size: 60rpx;
+  animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10rpx); }
+}
+
+.medal-icon {
+  font-size: 48rpx;
+  margin-bottom: 16rpx;
+}
+
+.medal-icon.gold {
+  font-size: 56rpx;
+}
+
+.player-avatar-wrap {
+  width: 120rpx;
+  height: 120rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 16rpx;
+  border: 4rpx solid #f0f0f0;
+  background: #f5f5f5;
+}
+
+.player-avatar-wrap.champion {
+  width: 140rpx;
+  height: 140rpx;
+  border-color: #ffd700;
+}
+
+.player-avatar-large {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+  background: linear-gradient(135deg, #e0e0e0 0%, #f5f5f5 100%);
+}
+
+.player-name-large {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 12rpx;
+  text-align: center;
+  max-width: 180rpx;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.player-name-large.champion {
+  font-size: 32rpx;
+  color: #ffa940;
+}
+
+.player-stats-large {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6rpx;
+  margin-bottom: 16rpx;
+}
+
+.stat-item {
+  font-size: 22rpx;
+  color: #666;
+}
+
+.stat-rate {
+  font-size: 26rpx;
+  font-weight: bold;
+  color: #00b4d8;
+}
+
+.stat-rate.champion {
+  color: #ffa940;
+}
+
+/* 排名列表 */
+.ranking-list {
+  background: #fff;
+  margin: 5rpx 30rpx;
+  border-radius: 24rpx;
+  padding: 35rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.1);
+  width: 70%;
+}
+
+.list-header {
+  margin-bottom: 24rpx;
+  padding-bottom: 16rpx;
+  border-bottom: 2rpx solid #f0f0f0;
+}
+
+.header-text {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.ranking-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
+}
+
+.ranking-item:last-child {
+  border-bottom: none;
+}
+
+.rank-number-normal {
+  width: 60rpx;
+  height: 60rpx;
+  border-radius: 50%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24rpx;
+  font-weight: bold;
+  color: #666;
+  margin-right: 20rpx;
+}
+
+.player-avatar-small-wrap {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 20rpx;
+  background: #f5f5f5;
+}
+
+.player-avatar {
+  width: 100%;
+  height: 100%;
+}
+
+.avatar-placeholder-small {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32rpx;
+}
+
+.player-name {
+  flex: 1;
+  font-size: 28rpx;
+  color: #333;
+}
+
+.player-stats {
+  display: flex;
+  gap: 16rpx;
+  align-items: center;
+}
+
+.stat-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.stat-text.win-rate {
+  color: #00b4d8;
+  font-weight: bold;
+}
+
+/* 底部按钮 */
+.bottom-actions {
+  display: flex;
+  gap: 20rpx;
+  padding: 40rpx 30rpx;
+}
+
+.action-button {
+  flex: 1;
+  height: 88rpx;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-button.primary {
+  background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+  color: #fff;
+}
+
+.action-button.secondary {
+  background: #fff;
+  color: #00b4d8;
+  border: 2rpx solid #00b4d8;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 80rpx 30rpx;
+}
+
+.empty-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+}

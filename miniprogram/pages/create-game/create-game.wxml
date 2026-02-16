@@ -1,0 +1,106 @@
+<view class="container">
+  <view class="form-card">
+    <view class="form-header">
+      <text class="header-title">创建新球局</text>
+      <text class="header-subtitle">填写球局基本信息</text>
+    </view>
+
+    <view class="form-content">
+      <!-- 球局名称 -->
+      <view class="form-item">
+        <view class="item-label">
+          <text class="label-text">球局名称</text>
+          <text class="required">*</text>
+        </view>
+        <input 
+          class="item-input" 
+          placeholder="请输入球局名称,如:周末羽毛球约战" 
+          value="{{gameName}}"
+          bindinput="onGameNameInput"
+          maxlength="30"
+        />
+        <text class="char-count">{{gameName.length}}/30</text>
+      </view>
+
+      <!-- 球馆地点 -->
+      <view class="form-item">
+        <view class="item-label">
+          <text class="label-text">球馆地点</text>
+          <text class="required">*</text>
+        </view>
+        <view class="location-picker" bindtap="onPickLocation">
+          <text class="location-text" wx:if="{{location}}">{{location}}</text>
+          <text class="placeholder-text" wx:else>点击选择球馆位置</text>
+          <image class="location-icon" src="/images/location-icon.png"></image>
+        </view>
+      </view>
+
+      <!-- 开始时间 -->
+      <view class="form-item">
+        <view class="item-label">
+          <text class="label-text">开始时间</text>
+          <text class="required">*</text>
+        </view>
+        <picker 
+          mode="multiSelector" 
+          bindchange="onTimeChange"
+          bindcolumnchange="onTimeColumnChange"
+          value="{{timeIndex}}"
+          range="{{timeRange}}"
+        >
+          <view class="time-picker">
+            <text class="time-text" wx:if="{{startTime}}">{{startTime}}</text>
+            <text class="placeholder-text" wx:else>选择日期和时间</text>
+            <image class="arrow-icon" src="/images/arrow-right.png"></image>
+          </view>
+        </picker>
+      </view>
+
+      <!-- 参与人数 -->
+      <view class="form-item">
+        <view class="item-label">
+          <text class="label-text">最多参与人数</text>
+          <text class="required">*</text>
+        </view>
+        <view class="number-selector">
+          <button class="num-btn minus" bindtap="onDecrease">-</button>
+          <text class="num-value">{{maxPlayers}}人</text>
+          <button class="num-btn plus" bindtap="onIncrease">+</button>
+        </view>
+        <text class="hint-text">建议4-20人,将自动分配场地</text>
+      </view>
+
+      <!-- 场地数量 -->
+      <view class="form-item">
+        <view class="item-label">
+          <text class="label-text">场地数量</text>
+        </view>
+        <view class="court-info">
+          <text class="court-number">{{courtCount}}片场地</text>
+          <text class="court-hint">(系统根据人数自动计算)</text>
+        </view>
+      </view>
+
+      <!-- 备注信息 -->
+      <view class="form-item">
+        <view class="item-label">
+          <text class="label-text">备注信息</text>
+        </view>
+        <textarea 
+          class="item-textarea" 
+          placeholder="可添加球局说明、费用分摊等信息"
+          value="{{remark}}"
+          bindinput="onRemarkInput"
+          maxlength="200"
+        />
+        <text class="char-count">{{remark.length}}/200</text>
+      </view>
+    </view>
+
+    <!-- 按钮区 -->
+    <view class="button-group">
+      <button class="cancel-btn" bindtap="onCancel">取消</button>
+      <button class="create-btn" bindtap="onCreate">立即创建</button>
+    </view>
+  </view>
+</view>

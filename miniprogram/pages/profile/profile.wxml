@@ -1,0 +1,75 @@
+<view class="container">
+  <!-- 头像 -->
+  <view class="form-item" bindtap="onChooseAvatar">
+    <text class="form-label">头像</text>
+    <view class="form-value">
+      <image class="avatar-img" src="{{userInfo.avatarUrl}}" mode="aspectFill" wx:if="{{userInfo.avatarUrl}}"></image>
+      <view class="avatar-empty" wx:else>👤</view>
+      <text class="form-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 姓名 -->
+  <view class="form-item" bindtap="onEditNickname">
+    <text class="form-label">姓名</text>
+    <view class="form-value">
+      <text class="form-text">{{userInfo.nickName || '请输入您的姓名'}}</text>
+      <text class="form-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 性别 -->
+  <view class="form-item">
+    <text class="form-label">性别</text>
+    <view class="form-value gender-btns">
+      <view class="gender-btn {{userInfo.gender === 1 ? 'active' : ''}}" bindtap="onSelectGender" data-gender="1">
+        <text class="gender-icon male">♂</text>
+        <text>男</text>
+      </view>
+      <view class="gender-btn {{userInfo.gender === 2 ? 'active' : ''}}" bindtap="onSelectGender" data-gender="2">
+        <text class="gender-icon female">♀</text>
+        <text>女</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 自评级别 -->
+  <view class="form-item" bindtap="onSelectLevel">
+    <text class="form-label">自评级别</text>
+    <view class="form-value">
+      <text class="form-text">{{userInfo.level || 'L3'}}</text>
+      <text class="form-arrow">›</text>
+    </view>
+  </view>
+
+  <!-- 保存按钮 -->
+  <view class="save-btn-wrap">
+    <button class="save-btn" bindtap="onSave">保存</button>
+  </view>
+</view>
+
+<!-- 昵称编辑弹窗 -->
+<view class="edit-mask" wx:if="{{showNicknameModal}}" catchtap="onCloseNicknameModal"></view>
+<view class="edit-sheet {{showNicknameModal ? 'show' : ''}}">
+  <view class="sheet-header">
+    <text class="sheet-title">修改姓名</text>
+    <text class="sheet-close" catchtap="onCloseNicknameModal">×</text>
+  </view>
+  <input class="edit-input" type="nickname" placeholder="请输入姓名" value="{{tempNickname}}" bindinput="onNicknameInput" focus="{{showNicknameModal}}"/>
+  <button class="sheet-confirm-btn" bindtap="onConfirmNickname">确定</button>
+</view>
+
+<!-- 级别选择弹窗 -->
+<view class="edit-mask" wx:if="{{showLevelModal}}" catchtap="onCloseLevelModal"></view>
+<view class="edit-sheet {{showLevelModal ? 'show' : ''}}">
+  <view class="sheet-header">
+    <text class="sheet-title">选择级别</text>
+    <text class="sheet-close" catchtap="onCloseLevelModal">×</text>
+  </view>
+  <view class="level-list">
+    <view class="level-item {{userInfo.level === item ? 'active' : ''}}" wx:for="{{levelOptions}}" wx:key="*this" bindtap="onConfirmLevel" data-level="{{item}}">
+      <text>{{item}}</text>
+      <text class="check-icon" wx:if="{{userInfo.level === item}}">✓</text>
+    </view>
+  </view>
+</view>

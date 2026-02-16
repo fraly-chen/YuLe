@@ -1,0 +1,248 @@
+/* pages/profile/profile.wxss */
+page {
+  background: #fff;
+}
+
+.container {
+  min-height: 100vh;
+  background: #fff;
+  padding-bottom: 160rpx;
+}
+
+/* 表单项 */
+.form-item {
+  display: flex;
+  align-items: center;
+  padding: 32rpx 24rpx 32rpx 24rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.form-label {
+  width: 140rpx;
+  font-size: 30rpx;
+  color: #333;
+  flex-shrink: 0;
+  text-align: left;
+}
+
+.form-value {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-width: 0;
+}
+
+.form-text {
+  font-size: 30rpx;
+  color: #333;
+  text-align: right;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.form-text.placeholder {
+  color: #ccc;
+}
+
+.form-arrow {
+  font-size: 36rpx;
+  color: #ccc;
+  margin-left: 16rpx;
+  flex-shrink: 0;
+}
+
+/* 头像 */
+.avatar-img {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+}
+
+.avatar-empty {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48rpx;
+}
+
+/* 性别选择 */
+.gender-btns {
+  display: flex;
+  gap: 24rpx;
+}
+
+.gender-btn {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 40rpx;
+  border-radius: 40rpx;
+  background: #f5f5f5;
+  font-size: 28rpx;
+  color: #666;
+  border: 2rpx solid #f5f5f5;
+}
+
+.gender-btn.active {
+  border-color: #00b4d8;
+  background: #fff;
+}
+
+.gender-icon {
+  margin-right: 8rpx;
+  font-size: 32rpx;
+}
+
+.gender-icon.male {
+  color: #00b4d8;
+}
+
+.gender-icon.female {
+  color: #ff6b81;
+}
+
+/* 授权按钮 */
+.auth-btn {
+  font-size: 26rpx;
+  color: #00b4d8;
+  background: transparent;
+  padding: 0;
+  margin: 0 16rpx 0 0;
+  line-height: 1.5;
+}
+
+.auth-btn::after {
+  border: none;
+}
+
+/* 保存按钮 */
+.save-btn-wrap {
+  position: fixed;
+  left: 40rpx;
+  right: 40rpx;
+  bottom: 0;
+  padding-bottom: calc(40rpx + env(safe-area-inset-bottom));
+  background: transparent;
+}
+
+.save-btn {
+  width: 100%;
+  height: 96rpx;
+  background: linear-gradient(135deg, #5ee7df 0%, #66d9e8 100%);
+  color: #fff;
+  font-size: 34rpx;
+  font-weight: 500;
+  border-radius: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.save-btn::after {
+  border: none;
+}
+
+/* 编辑弹窗 */
+.edit-mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 999;
+}
+
+.edit-sheet {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: #fff;
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 0 40rpx 60rpx;
+  padding-bottom: calc(60rpx + env(safe-area-inset-bottom));
+  z-index: 1000;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.edit-sheet.show {
+  transform: translateY(0);
+}
+
+.sheet-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 30rpx 0;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.sheet-title {
+  font-size: 34rpx;
+  font-weight: 600;
+  color: #333;
+}
+
+.sheet-close {
+  font-size: 48rpx;
+  color: #999;
+  line-height: 1;
+}
+
+.edit-input {
+  width: 100%;
+  height: 96rpx;
+  background: #f5f5f5;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  margin: 30rpx 0;
+  font-size: 30rpx;
+  box-sizing: border-box;
+}
+
+.sheet-confirm-btn {
+  width: 100%;
+  height: 96rpx;
+  background: linear-gradient(135deg, #5ee7df 0%, #b490ca 100%);
+  color: #fff;
+  font-size: 34rpx;
+  border-radius: 48rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sheet-confirm-btn::after {
+  border: none;
+}
+
+/* 级别选择列表 */
+.level-list {
+  padding: 20rpx 0;
+}
+
+.level-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 20rpx;
+  font-size: 30rpx;
+  color: #333;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.level-item.active {
+  color: #00b4d8;
+}
+
+.check-icon {
+  color: #00b4d8;
+  font-size: 36rpx;
+}

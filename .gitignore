@@ -1,0 +1,61 @@
+# 小程序私有配置文件（包含个人开发设置）
+project.private.config.json
+*.md
+
+
+# 本地环境配置
+*.local.json
+*.local.js
+.env
+.env.*
+
+# 密钥和证书文件
+*.pem
+*.key
+*.cert
+*.crt
+*.p12
+*.pfx
+
+# IDE 和编辑器
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 小程序构建产物
+miniprogram_npm/
+.miniprogram/
+
+# 日志文件
+*.log
+logs/
+
+# 临时文件
+*.tmp
+*.temp
+.cache/
+
+# 测试覆盖率
+coverage/
+
+# 云函数依赖（每个云函数目录下的 node_modules）
+cloudfunctions/*/node_modules/

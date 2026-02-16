@@ -1,0 +1,314 @@
+/* pages/game-list/game-list.wxss */
+page {
+  background: #ffffff;
+  height: 100vh;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* 头部区域 */
+.header-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  padding: 0 30rpx;
+  box-shadow: 0 2rpx 8rpx rgba(0, 0, 0, 0.06);
+}
+
+/* 标签栏 */
+.tabs {
+  display: flex;
+  flex: 1;
+}
+
+.tab-item {
+  position: relative;
+  height: 88rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 40rpx;
+}
+
+.tab-text {
+  font-size: 30rpx;
+  color: #999;
+  transition: all 0.3s;
+}
+
+.tab-item.active .tab-text {
+  color: #00b4d8;
+  font-weight: bold;
+}
+
+.tab-indicator {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60rpx;
+  height: 6rpx;
+  background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+  border-radius: 3rpx;
+}
+
+/* 创建按钮 */
+.create-btn {
+  display: flex;
+  align-items: center;
+  padding: 16rpx 28rpx;
+  background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+  border-radius: 40rpx;
+  color: #fff;
+}
+
+.create-icon {
+  font-size: 32rpx;
+  font-weight: bold;
+  margin-right: 8rpx;
+  line-height: 1;
+}
+
+.create-text {
+  font-size: 28rpx;
+}
+
+/* 球局列表 */
+.game-list {
+  flex: 1;
+  padding: 20rpx 30rpx;
+}
+
+.game-item-wrapper {
+  position: relative;
+  margin-bottom: 20rpx;
+  overflow: hidden;
+  border-radius: 20rpx;
+}
+
+.game-item {
+  position: relative;
+  transition: transform 0.3s ease-out;
+  z-index: 2;
+}
+
+.game-card {
+  background: #fff;
+  border-radius: 20rpx;
+  padding: 30rpx;
+  box-shadow: 0 4rpx 12rpx rgba(0, 0, 0, 0.08);
+  border: 1rpx solid #f0f0f0;
+}
+
+/* 球局头部 */
+.game-header {
+  margin-bottom: 24rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #f0f0f0;
+}
+
+.game-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.game-name {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.status-badge {
+  padding: 8rpx 20rpx;
+  border-radius: 20rpx;
+  margin-left: 16rpx;
+}
+
+.status-badge.waiting {
+  background: #e6f7ff;
+}
+
+.status-badge.playing {
+  background: #fff7e6;
+}
+
+.status-badge.finished {
+  background: #f0f0f0;
+}
+
+.status-text {
+  font-size: 24rpx;
+}
+
+.status-badge.waiting .status-text {
+  color: #1890ff;
+}
+
+.status-badge.playing .status-text {
+  color: #fa8c16;
+}
+
+.status-badge.finished .status-text {
+  color: #999;
+}
+
+.game-meta {
+  display: flex;
+  align-items: center;
+}
+
+.meta-icon {
+  font-size: 28rpx;
+  margin-right: 8rpx;
+}
+
+.meta-text {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.creator-tag {
+  font-size: 22rpx;
+  color: #00b4d8;
+  margin-left: 8rpx;
+}
+
+/* 球局信息 */
+.game-info {
+  margin-bottom: 24rpx;
+}
+
+.info-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 16rpx;
+}
+
+.info-icon {
+  font-size: 28rpx;
+  margin-right: 12rpx;
+}
+
+.info-text {
+  font-size: 28rpx;
+  color: #666;
+  flex: 1;
+}
+
+.progress-bar {
+  width: 120rpx;
+  height: 8rpx;
+  background: #f0f0f0;
+  border-radius: 4rpx;
+  margin-left: 16rpx;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #00b4d8 0%, #06d6a0 100%);
+  transition: width 0.3s;
+}
+
+/* 操作按钮 */
+.game-actions {
+  display: flex;
+  gap: 16rpx;
+}
+
+.action-btn {
+  flex: 1;
+  height: 72rpx;
+  border-radius: 36rpx;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.join-btn {
+  background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+  color: #fff;
+}
+
+.quit-btn {
+  background: #fff;
+  color: #f56c6c;
+  border: 2rpx solid #f56c6c;
+}
+
+.full-btn {
+  background: #f5f5f5;
+  color: #999;
+}
+
+.playing-btn {
+  background: linear-gradient(135deg, #fa8c16 0%, #faad14 100%);
+  color: #fff;
+}
+
+.finished-btn {
+  background: #f0f0f0;
+  color: #666;
+}
+
+/* 删除按钮 - 在包装层右侧 */
+.delete-btn {
+  position: absolute;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  width: 160rpx;
+  background: linear-gradient(135deg, #f56c6c 0%, #ff7875 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+}
+
+.delete-text {
+  font-size: 28rpx;
+  color: #fff;
+}
+
+/* 空状态 */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 120rpx 60rpx;
+}
+
+.empty-icon-text {
+  font-size: 120rpx;
+  margin-bottom: 30rpx;
+}
+
+.empty-text {
+  font-size: 28rpx;
+  color: #999;
+  margin-bottom: 40rpx;
+}
+
+.create-new-btn {
+  width: 400rpx;
+  height: 80rpx;
+  background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+  color: #fff;
+  border-radius: 40rpx;
+  font-size: 30rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

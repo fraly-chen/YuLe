@@ -1,0 +1,141 @@
+<view class="container">
+  <!-- 顶部Banner区域 -->
+  <view class="header-banner">
+    <image class="banner-bg" src="/images/banner.jpg" mode="aspectFill"></image>
+  </view>
+
+  <!-- 用户信息区域 -->
+  <view class="user-section">
+    <view class="user-avatar-wrap" bindtap="{{userInfo ? '' : 'onShowLogin'}}">
+      <image class="user-avatar-img" src="{{userInfo.avatarUrl}}" mode="aspectFill" wx:if="{{userInfo && userInfo.avatarUrl}}"></image>
+      <view class="user-avatar-placeholder" wx:else>👤</view>
+    </view>
+    <view class="user-info-wrap">
+      <text class="user-nickname">{{userInfo.nickName || '点击登录'}}</text>
+      <text class="user-likes">获赞 {{userInfo.likes || 0}}</text>
+    </view>
+    <button class="edit-profile-btn" bindtap="onEditProfile" wx:if="{{userInfo}}">编辑资料</button>
+    <button class="login-btn-small" bindtap="onShowLogin" wx:else>登录</button>
+  </view>
+
+  <!-- 登录底部弹窗 -->
+  <view class="login-mask" wx:if="{{showLoginModal}}" catchtap="onCloseLoginModal"></view>
+  <view class="login-sheet {{showLoginModal ? 'show' : ''}}">
+    <view class="sheet-header">
+      <text class="sheet-title">完善个人信息</text>
+      <text class="sheet-close" catchtap="onCloseLoginModal">×</text>
+    </view>
+    
+    <view class="sheet-body">
+      <!-- 点击获取头像 -->
+      <view class="login-item">
+        <text class="login-label">头像</text>
+        <button class="avatar-choose-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
+          <image class="avatar-preview" src="{{tempAvatarUrl}}" mode="aspectFill" wx:if="{{tempAvatarUrl}}"></image>
+          <view class="avatar-placeholder-sm" wx:else>👤</view>
+          <text class="item-hint">点击获取</text>
+        </button>
+      </view>
+      
+      <!-- 点击获取昵称 -->
+      <view class="login-item">
+        <text class="login-label">昵称</text>
+        <view class="nickname-wrap">
+          <input 
+            class="nickname-input-visible" 
+            type="nickname" 
+            placeholder="点击获取微信昵称" 
+            bindinput="onNicknameInput"
+            bindblur="onNicknameBlur"
+            value="{{tempNickname}}"
+          />
+        </view>
+      </view>
+    </view>
+    
+    <button class="sheet-confirm-btn" bindtap="onConfirmLogin">确认登录</button>
+  </view>
+
+  <!-- 球局列表 -->
+  <view class="game-section">
+    <view class="section-head">
+      <text class="section-title">附近球局</text>
+      <text class="section-count">{{gameList.length}}个</text>
+    </view>
+
+    <!-- 有球局时 -->
+    <scroll-view class="game-scroll" scroll-y wx:if="{{gameList.length > 0}}">
+      <view 
+        class="game-item-wrap"
+        wx:for="{{gameList}}" 
+        wx:key="id"
+      >
+        <view 
+          class="delete-btn" 
+          catchtap="onDeleteGame" 
+          data-id="{{item.id}}"
+          wx:if="{{item.isCreator}}"
+        >删除</view>
+        <view 
+          class="game-item"
+          style="transform: translateX({{item.translateX || 0}}px)"
+          bindtouchstart="onTouchStart"
+          bindtouchmove="onTouchMove"
+          bindtouchend="onTouchEnd"
+          data-index="{{index}}"
+          bindtap="onGameTap"
+          data-id="{{item.id}}"
+        >
+          <view class="game-info">
+            <text class="game-name">{{item.gameName}}</text>
+            <view class="game-meta">
+              <text class="game-location">📍 {{item.location}}</text>
+              <text class="game-time">{{item.startTime}}</text>
+            </view>
+          </view>
+          <view class="game-right">
+            <text class="game-status {{item.status}}">{{statusMap[item.status]}}</text>
+            <text class="game-players">{{item.currentPlayers || 0}}/{{item.maxPlayers || 8}}人</text>
+          </view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 创建球局按钮 -->
+    <button class="create-game-btn" wx:if="{{gameList.length > 0}}" bindtap="onCreateGame">+ 创建新球局</button>
+
+    <!-- 无球局时 -->
+    <view class="empty-state" wx:else>
+      <text class="empty-icon">🏸</text>
+      <text class="empty-text">暂无球局</text>
+      <button class="empty-btn" bindtap="onCreateGame">创建新球局</button>
+    </view>
+  </view>
+
+  <!-- 创建球局弹窗 -->
+  <view class="create-mask" wx:if="{{showCreateModal}}" catchtap="onCancelCreate"></view>
+  <view class="create-sheet {{showCreateModal ? 'show' : ''}}">
+    <view class="sheet-header">
+      <text class="sheet-title">创建球局</text>
+      <text class="sheet-close" catchtap="onCancelCreate">×</text>
+    </view>
+    
+    <view class="create-form">
+      <view class="form-item">
+        <text class="form-label">球局名称</text>
+        <input class="form-input" placeholder="请输入球局名称" value="{{gameName}}" bindinput="onGameNameInput"/>
+      </view>
+      
+      <view class="form-item">
+        <text class="form-label">人数上限</text>
+        <view class="stepper">
+          <text class="stepper-btn" catchtap="onDecreaseMaxPlayers">－</text>
+          <text class="stepper-value">{{maxPlayers}}</text>
+          <text class="stepper-btn" catchtap="onIncreaseMaxPlayers">＋</text>
+        </view>
+      </view>
+    </view>
+    
+    <button class="sheet-confirm-btn" bindtap="onConfirmCreate">确认创建</button>
+  </view>
+</view>

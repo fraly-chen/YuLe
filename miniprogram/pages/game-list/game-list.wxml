@@ -1,0 +1,150 @@
+<view class="container">
+  <!-- 顶部标签和创建按钮 -->
+  <view class="header-section">
+    <view class="tabs">
+      <view 
+        class="tab-item {{currentTab === 0 ? 'active' : ''}}" 
+        bindtap="onTabChange" 
+        data-index="0"
+      >
+        <text class="tab-text">全部球局</text>
+        <view class="tab-indicator" wx:if="{{currentTab === 0}}"></view>
+      </view>
+      <view 
+        class="tab-item {{currentTab === 1 ? 'active' : ''}}" 
+        bindtap="onTabChange" 
+        data-index="1"
+      >
+        <text class="tab-text">我的球局</text>
+        <view class="tab-indicator" wx:if="{{currentTab === 1}}"></view>
+      </view>
+    </view>
+    <button class="create-btn" bindtap="onCreateGame">
+      <text class="create-icon">+</text>
+      <text class="create-text">创建</text>
+    </button>
+  </view>
+
+  <!-- 球局列表 -->
+  <scroll-view class="game-list" scroll-y enable-back-to-top>
+    <view 
+      class="game-item-wrapper"
+      wx:for="{{gameList}}" 
+      wx:key="id"
+    >
+      <!-- 删除按钮(左滑显示) -->
+      <view 
+        class="delete-btn" 
+        catchtap="onDeleteGame" 
+        data-id="{{item.id}}"
+        wx:if="{{item.isCreator}}"
+      >
+        <text class="delete-text">删除</text>
+      </view>
+      
+      <view 
+        class="game-item"
+        bindtap="onGameDetail"
+        data-id="{{item.id}}"
+        bindlongpress="onLongPress"
+        data-item="{{item}}"
+        bindtouchstart="onTouchStart"
+        bindtouchmove="onTouchMove"
+        bindtouchend="onTouchEnd"
+        data-index="{{index}}"
+        style="transform: translateX({{item.translateX || 0}}rpx)"
+      >
+        <view class="game-card">
+        <!-- 球局头部 -->
+        <view class="game-header">
+          <view class="game-title-row">
+            <text class="game-name">{{item.gameName}}</text>
+            <view class="status-badge {{item.status}}">
+              <text class="status-text">{{statusMap[item.status]}}</text>
+            </view>
+          </view>
+          <view class="game-meta">
+            <text class="meta-icon">👤</text>
+            <text class="meta-text">{{item.creatorName}}</text>
+            <text class="creator-tag" wx:if="{{item.isCreator}}">(我创建)</text>
+          </view>
+        </view>
+
+        <!-- 球局信息 -->
+        <view class="game-info">
+          <view class="info-row">
+            <text class="info-icon">📍</text>
+            <text class="info-text">{{item.location}}</text>
+          </view>
+          <view class="info-row">
+            <text class="info-icon">👥</text>
+            <text class="info-text">{{item.currentPlayers}}/{{item.maxPlayers}}人</text>
+            <view class="progress-bar">
+              <view class="progress-fill" style="width: {{item.currentPlayers / item.maxPlayers * 100}}%"></view>
+            </view>
+          </view>
+        </view>
+
+        <!-- 操作按钮 -->
+        <view class="game-actions" catchtap="stopPropagation">
+          <!-- 等待中 - 未加入 -->
+          <button 
+            wx:if="{{item.status === 'waiting' && !item.isJoined && item.currentPlayers < item.maxPlayers}}"
+            class="action-btn join-btn" 
+            catchtap="onJoinGame"
+            data-id="{{item.id}}"
+          >
+            加入
+          </button>
+
+          <!-- 等待中 - 已满员 -->
+          <button 
+            wx:if="{{item.status === 'waiting' && item.currentPlayers >= item.maxPlayers}}"
+            class="action-btn full-btn"
+            disabled
+          >
+            已满员
+          </button>
+
+          <!-- 已加入 -->
+          <button 
+            wx:if="{{item.isJoined && item.status === 'waiting'}}"
+            class="action-btn quit-btn" 
+            catchtap="onQuitGame"
+            data-id="{{item.id}}"
+          >
+            退出
+          </button>
+
+          <!-- 进行中 -->
+          <button 
+            wx:if="{{item.status === 'playing'}}"
+            class="action-btn playing-btn"
+            catchtap="onGameDetail"
+            data-id="{{item.id}}"
+          >
+            查看详情
+          </button>
+
+          <!-- 已结束 -->
+          <button 
+            wx:if="{{item.status === 'finished'}}"
+            class="action-btn finished-btn"
+            catchtap="onViewResult"
+            data-id="{{item.id}}"
+          >
+            查看结果
+          </button>
+        </view>
+      </view>
+      </view>
+    </view>
+
+    <!-- 空状态 -->
+    <view class="empty-state" wx:if="{{gameList.length === 0}}">
+      <view class="empty-icon-text">🏸</view>
+      <text class="empty-text">暂无球局</text>
+      <button class="create-new-btn" bindtap="onCreateGame">创建新球局</button>
+    </view>
+  </scroll-view>
+</view>
