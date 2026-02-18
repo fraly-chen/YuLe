@@ -1,21 +1,169 @@
 <view class="container">
-  <!-- 顶部Banner区域 -->
-  <view class="header-banner">
-    <image class="banner-bg" src="/images/banner.jpg" mode="aspectFill"></image>
+  <!-- 顶部Banner区域 - 点击折叠其他区域 -->
+  <view class="banner-section {{userExpanded || gameExpanded ? 'collapsed' : ''}}" bindtap="onToggleBanner">
+    <view class="banner-content" wx:if="{{gameList.length === 0}}">
+      <text class="banner-title-light">NO GAME</text>
+      <text class="banner-title-bold">PLEASE ADD</text>
+    </view>
+    <view class="banner-content" wx:else>
+      <text class="banner-title-light">READY TO</text>
+      <text class="banner-title-bold">PLAY</text>
+    </view>
+    <view class="banner-icon">🏸</view>
   </view>
 
-  <!-- 用户信息区域 -->
-  <view class="user-section">
-    <view class="user-avatar-wrap" bindtap="{{userInfo ? '' : 'onShowLogin'}}">
-      <image class="user-avatar-img" src="{{userInfo.avatarUrl}}" mode="aspectFill" wx:if="{{userInfo && userInfo.avatarUrl}}"></image>
-      <view class="user-avatar-placeholder" wx:else>👤</view>
-    </view>
-    <view class="user-info-wrap">
+  <!-- 中间个人信息区域 - 可折叠卡片 -->
+  <view class="user-card {{userExpanded ? 'expanded' : ''}}" bindtap="onToggleUserCard">
+    <view class="user-card-header">
+      <view class="user-avatar-wrap" catchtap="{{userInfo ? 'onChooseAvatarProfile' : 'onShowLogin'}}">
+        <image class="user-avatar-img" src="{{userInfo.avatarUrl}}" mode="aspectFill" wx:if="{{userInfo && userInfo.avatarUrl}}"></image>
+        <view class="user-avatar-placeholder" wx:else>👤</view>
+      </view>
       <text class="user-nickname">{{userInfo.nickName || '点击登录'}}</text>
-      <text class="user-likes">获赞 {{userInfo.likes || 0}}</text>
+      <view class="user-actions">
+        <!-- <text class="action-icon">💬</text>
+        <text class="action-icon">📤</text> -->
+      </view>
     </view>
-    <button class="edit-profile-btn" bindtap="onEditProfile" wx:if="{{userInfo}}">编辑资料</button>
-    <button class="login-btn-small" bindtap="onShowLogin" wx:else>登录</button>
+    
+    <!-- 展开后的编辑资料区域 -->
+    <view class="user-detail" wx:if="{{userExpanded && userInfo}}" catchtap="stopPropagation">
+      <!-- 统计数据 -->
+      <view class="stat-row">
+        <view class="stat-item">
+          <text class="stat-value">{{stats.totalGames || 0}}</text>
+          <text class="stat-label">参与球局</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{stats.totalWins || 0}}</text>
+          <text class="stat-label">获胜场次</text>
+        </view>
+        <view class="stat-item">
+          <text class="stat-value">{{stats.winRate || 0}}%</text>
+          <text class="stat-label">胜率</text>
+        </view>
+      </view>
+      
+      <!-- 编辑资料表单 -->
+      <view class="profile-form">
+        <!-- 姓名 -->
+        <view class="profile-item" catchtap="onEditNickname">
+          <text class="profile-label">姓名</text>
+          <view class="profile-value">
+            <text class="profile-text">{{userInfo.nickName || '请输入'}}</text>
+            <text class="profile-arrow">›</text>
+          </view>
+        </view>
+        
+        <!-- 性别 -->
+        <view class="profile-item">
+          <text class="profile-label">性别</text>
+          <view class="profile-value gender-btns">
+            <view class="gender-btn {{userInfo.gender === 1 ? 'active' : ''}}" catchtap="onSelectGender" data-gender="1">
+              <text class="gender-icon male">♂</text>
+              <text>男</text>
+            </view>
+            <view class="gender-btn {{userInfo.gender === 2 ? 'active' : ''}}" catchtap="onSelectGender" data-gender="2">
+              <text class="gender-icon female">♀</text>
+              <text>女</text>
+            </view>
+          </view>
+        </view>
+        
+        <!-- 自评级别 -->
+        <view class="profile-item" catchtap="onSelectLevel">
+          <text class="profile-label">级别</text>
+          <view class="profile-value">
+            <text class="profile-text">{{userInfo.level || 'L3 中级'}}</text>
+            <text class="profile-arrow">›</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 保存按钮 -->
+      <button class="save-profile-btn" catchtap="onSaveProfile">保存资料</button>
+    </view>
+    
+    <!-- 未登录时显示登录按钮 -->
+    <view class="user-detail" wx:if="{{userExpanded && !userInfo}}">
+      <button class="login-btn-card" catchtap="onShowLogin">立即登录</button>
+    </view>
+    
+    <view class="expand-hint">
+      <text class="expand-arrow">{{userExpanded ? '▲' : '▼'}}</text>
+    </view>
+  </view>
+
+  <!-- 底部球局区域 - 深色背景 -->
+  <view class="game-section {{gameExpanded ? 'expanded' : ''}}">
+    <view class="game-header" bindtap="onToggleGameSection">
+      <view class="game-header-left">
+        <text class="game-icon">👥</text>
+        <text class="game-header-title">我的球局</text>
+      </view>
+      <view class="game-add-btn" catchtap="onCreateGame">
+        <text class="add-icon">+</text>
+      </view>
+    </view>
+
+    <!-- 球局列表内容 -->
+    <view class="game-content">
+      <!-- 有球局时 -->
+      <scroll-view class="game-scroll" scroll-y wx:if="{{gameList.length > 0}}">
+        <view 
+          class="game-item-wrap"
+          wx:for="{{gameList}}" 
+          wx:key="id"
+        >
+          <view 
+            class="delete-btn" 
+            catchtap="onDeleteGame" 
+            data-id="{{item.id}}"
+            wx:if="{{item.isCreator}}"
+          >删除</view>
+          <view 
+            class="game-item"
+            style="transform: translateX({{item.translateX || 0}}px)"
+            bindtouchstart="onTouchStart"
+            bindtouchmove="onTouchMove"
+            bindtouchend="onTouchEnd"
+            data-index="{{index}}"
+            catchtap="onGameTap"
+            data-id="{{item.id}}"
+          >
+            <view class="game-info">
+              <text class="game-name">{{item.gameName}}</text>
+              <view class="game-meta">
+                <text class="game-time">{{item.startTime || '待定'}}</text>
+              </view>
+            </view>
+            <view class="game-right">
+              <text class="game-status {{item.status}}">{{statusMap[item.status]}}</text>
+              <text class="game-players">{{item.currentPlayers || 0}}/{{item.maxPlayers || 8}}人</text>
+            </view>
+          </view>
+        </view>
+      </scroll-view>
+
+      <!-- 无球局时 - 空状态动画 -->
+      <view class="empty-state" wx:else>
+        <view class="empty-animation">
+          <view class="court-bg">
+            <view class="court-line court-line-h"></view>
+            <view class="court-line court-line-v"></view>
+            <view class="court-net"></view>
+          </view>
+          <text class="empty-shuttle">🏸</text>
+        </view>
+        <view class="empty-tip">
+          <text class="empty-bracket">《</text>
+          <text class="empty-text">无球局</text>
+          <text class="empty-bracket">》</text>
+          <text class="empty-hint">请添加</text>
+          <view class="empty-arrow" catchtap="onCreateGame">➤</view>
+        </view>
+      </view>
+    </view>
   </view>
 
   <!-- 登录底部弹窗 -->
@@ -27,7 +175,6 @@
     </view>
     
     <view class="sheet-body">
-      <!-- 点击获取头像 -->
       <view class="login-item">
         <text class="login-label">头像</text>
         <button class="avatar-choose-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">
@@ -37,7 +184,6 @@
         </button>
       </view>
       
-      <!-- 点击获取昵称 -->
       <view class="login-item">
         <text class="login-label">昵称</text>
         <view class="nickname-wrap">
@@ -56,63 +202,33 @@
     <button class="sheet-confirm-btn" bindtap="onConfirmLogin">确认登录</button>
   </view>
 
-  <!-- 球局列表 -->
-  <view class="game-section">
-    <view class="section-head">
-      <text class="section-title">附近球局</text>
-      <text class="section-count">{{gameList.length}}个</text>
+  <!-- 昵称编辑弹窗 -->
+    <view class="edit-mask" wx:if="{{showNicknameModal}}" catchtap="onCloseNicknameModal"></view>
+    <view class="edit-sheet {{showNicknameModal ? 'show' : ''}}">
+      <view class="sheet-header">
+        <text class="sheet-title">修改姓名</text>
+        <text class="sheet-close" catchtap="onCloseNicknameModal">×</text>
+      </view>
+      <input class="edit-input" type="nickname" placeholder="请输入姓名" value="{{editNickname}}" bindinput="onEditNicknameInput" focus="{{showNicknameModal}}"/>
+      <button class="sheet-confirm-btn" bindtap="onConfirmNickname">确定</button>
     </view>
-
-    <!-- 有球局时 -->
-    <scroll-view class="game-scroll" scroll-y wx:if="{{gameList.length > 0}}">
-      <view 
-        class="game-item-wrap"
-        wx:for="{{gameList}}" 
-        wx:key="id"
-      >
-        <view 
-          class="delete-btn" 
-          catchtap="onDeleteGame" 
-          data-id="{{item.id}}"
-          wx:if="{{item.isCreator}}"
-        >删除</view>
-        <view 
-          class="game-item"
-          style="transform: translateX({{item.translateX || 0}}px)"
-          bindtouchstart="onTouchStart"
-          bindtouchmove="onTouchMove"
-          bindtouchend="onTouchEnd"
-          data-index="{{index}}"
-          bindtap="onGameTap"
-          data-id="{{item.id}}"
-        >
-          <view class="game-info">
-            <text class="game-name">{{item.gameName}}</text>
-            <view class="game-meta">
-              <text class="game-location">📍 {{item.location}}</text>
-              <text class="game-time">{{item.startTime}}</text>
-            </view>
-          </view>
-          <view class="game-right">
-            <text class="game-status {{item.status}}">{{statusMap[item.status]}}</text>
-            <text class="game-players">{{item.currentPlayers || 0}}/{{item.maxPlayers || 8}}人</text>
-          </view>
+  
+    <!-- 级别选择弹窗 -->
+    <view class="edit-mask" wx:if="{{showLevelModal}}" catchtap="onCloseLevelModal"></view>
+    <view class="edit-sheet {{showLevelModal ? 'show' : ''}}">
+      <view class="sheet-header">
+        <text class="sheet-title">选择级别</text>
+        <text class="sheet-close" catchtap="onCloseLevelModal">×</text>
+      </view>
+      <view class="level-list">
+        <view class="level-item {{userInfo.level === item ? 'active' : ''}}" wx:for="{{levelOptions}}" wx:key="*this" bindtap="onConfirmLevel" data-level="{{item}}">
+          <text>{{item}}</text>
+          <text class="check-icon" wx:if="{{userInfo.level === item}}">✓</text>
         </view>
       </view>
-    </scroll-view>
-
-    <!-- 创建球局按钮 -->
-    <button class="create-game-btn" wx:if="{{gameList.length > 0}}" bindtap="onCreateGame">+ 创建新球局</button>
-
-    <!-- 无球局时 -->
-    <view class="empty-state" wx:else>
-      <text class="empty-icon">🏸</text>
-      <text class="empty-text">暂无球局</text>
-      <button class="empty-btn" bindtap="onCreateGame">创建新球局</button>
     </view>
-  </view>
-
-  <!-- 创建球局弹窗 -->
+  
+    <!-- 创建球局弹窗 -->
   <view class="create-mask" wx:if="{{showCreateModal}}" catchtap="onCancelCreate"></view>
   <view class="create-sheet {{showCreateModal ? 'show' : ''}}">
     <view class="sheet-header">

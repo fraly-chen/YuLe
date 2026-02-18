@@ -1,6 +1,6 @@
 /* pages/game-list/game-list.wxss */
 page {
-  background: #ffffff;
+  background: #f8f4e9;
   height: 100vh;
 }
 
@@ -42,7 +42,7 @@ page {
 }
 
 .tab-item.active .tab-text {
-  color: #00b4d8;
+  color: #6b5f38;
   font-weight: bold;
 }
 
@@ -53,7 +53,7 @@ page {
   transform: translateX(-50%);
   width: 60rpx;
   height: 6rpx;
-  background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+  background: linear-gradient(135deg, #a5c44e 0%, #8ab032 100%);
   border-radius: 3rpx;
 }
 
@@ -62,7 +62,7 @@ page {
   display: flex;
   align-items: center;
   padding: 16rpx 28rpx;
-  background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+  background: linear-gradient(135deg, #a5c44e 0%, #8ab032 100%);
   border-radius: 40rpx;
   color: #fff;
 }
@@ -136,11 +136,11 @@ page {
 }
 
 .status-badge.waiting {
-  background: #e6f7ff;
+  background: #f0ead8;
 }
 
 .status-badge.playing {
-  background: #fff7e6;
+  background: #f5f0e0;
 }
 
 .status-badge.finished {
@@ -152,11 +152,11 @@ page {
 }
 
 .status-badge.waiting .status-text {
-  color: #1890ff;
+  color: #a5c44e;
 }
 
 .status-badge.playing .status-text {
-  color: #fa8c16;
+  color: #6b5f38;
 }
 
 .status-badge.finished .status-text {
@@ -180,7 +180,7 @@ page {
 
 .creator-tag {
   font-size: 22rpx;
-  color: #00b4d8;
+  color: #a5c44e;
   margin-left: 8rpx;
 }
 

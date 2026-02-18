@@ -223,6 +223,16 @@ const getGameList = async (event) => {
   try {
     const { openid, status, limit = 20, onlyMine = false } = event;
     
+    // 自动清理超过24小时的球局
+    const expireTime = Date.now() - 24 * 60 * 60 * 1000; // 24小时前
+    try {
+      await db.collection('games').where({
+        createTime: _.lt(new Date(expireTime))
+      }).remove();
+    } catch (cleanErr) {
+      console.log('清理过期球局:', cleanErr.message);
+    }
+    
     let query = db.collection('games');
     
     // 只看我的球局
@@ -453,6 +463,21 @@ const recordResult = async (event) => {
       const matchIndex = round.matches.findIndex(m => m.courtId === courtId);
       
       if (matchIndex >= 0) {
+        const match = rounds[roundIndex].matches[matchIndex];
+        
+        // 获取胜利方和失败方的队员openid (team1/team2 结构)
+        let winnerOpenids = [];
+        let loserOpenids = [];
+        
+        if (winner === 'team1') {
+          winnerOpenids = (match.team1 || []).map(p => p.openid);
+          loserOpenids = (match.team2 || []).map(p => p.openid);
+        } else if (winner === 'team2') {
+          winnerOpenids = (match.team2 || []).map(p => p.openid);
+          loserOpenids = (match.team1 || []).map(p => p.openid);
+        }
+        
+        // 更新比赛结果
         rounds[roundIndex].matches[matchIndex].result = { winner, score };
         rounds[roundIndex].matches[matchIndex].status = 'finished';
         
@@ -462,6 +487,29 @@ const recordResult = async (event) => {
             updateTime: new Date()
           }
         });
+        
+        // 更新胜利方用户统计（增加胜场和参与场次）
+        for (const odId of winnerOpenids) {
+          if (odId && !odId.startsWith('test_')) {
+            await db.collection('users').where({ openid: odId }).update({
+              data: {
+                totalWins: _.inc(1),
+                totalGames: _.inc(1)
+              }
+            });
+          }
+        }
+        
+        // 更新失败方用户统计（只增加参与场次）
+        for (const odId of loserOpenids) {
+          if (odId && !odId.startsWith('test_')) {
+            await db.collection('users').where({ openid: odId }).update({
+              data: {
+                totalGames: _.inc(1)
+              }
+            });
+          }
+        }
         
         return { success: true, message: '结果已记录' };
       }
@@ -649,6 +697,87 @@ const createTestGame = async (event) => {
   }
 };
 
+// 修复历史战绩数据 - 扫描所有已完成比赛并更新用户统计
+const fixUserStats = async (event) => {
+  try {
+    const { openid } = event;
+    
+    console.log('开始修复用户统计, openid:', openid);
+    
+    if (!openid) {
+      return { success: false, message: 'openid不能为空' };
+    }
+    
+    // 获取所有球局（不限制状态）
+    const gamesRes = await db.collection('games').get();
+    const games = gamesRes.data || [];
+    
+    console.log('查询到球局数量:', games.length);
+    
+    let totalWins = 0;
+    let totalGames = 0;
+    
+    // 遍历所有球局
+    for (const game of games) {
+      const rounds = game.rounds || [];
+      
+      // 遍历每一轮
+      for (const round of rounds) {
+        const matches = round.matches || [];
+        
+        // 遍历每场比赛
+        for (const match of matches) {
+          // 检查比赛是否有结果
+          if (!match.result || !match.result.winner) continue;
+          
+          // 注意：数据结构是 team1/team2，不是 teamA/teamB
+          const team1 = match.team1 || [];
+          const team2 = match.team2 || [];
+          const winner = match.result.winner;
+          
+          // 检查用户是否在这场比赛中
+          const inTeam1 = team1.some(p => p && p.openid === openid);
+          const inTeam2 = team2.some(p => p && p.openid === openid);
+          
+          if (inTeam1 || inTeam2) {
+            totalGames++;
+            
+            // 检查是否获胜 (winner 值为 'team1' 或 'team2')
+            if ((winner === 'team1' && inTeam1) || (winner === 'team2' && inTeam2)) {
+              totalWins++;
+            }
+          }
+        }
+      }
+    }
+    
+    console.log('统计结果 - 总场次:', totalGames, '胜场:', totalWins);
+    
+    // 更新用户统计数据
+    const updateRes = await db.collection('users').where({ openid }).update({
+      data: {
+        totalGames: totalGames,
+        totalWins: totalWins
+      }
+    });
+    
+    console.log('更新结果:', updateRes);
+    
+    return {
+      success: true,
+      message: '战绩数据已修复',
+      stats: {
+        totalGames,
+        totalWins,
+        winRate: totalGames > 0 ? Math.round(totalWins / totalGames * 100) : 0
+      }
+    };
+  } catch (e) {
+    console.error('修复用户统计失败:', e);
+    return { success: false, message: e.message || '修复失败' };
+  }
+};
+
 // 云函数入口函数
 exports.main = async (event, context) => {
   switch (event.type) {
@@ -697,6 +826,8 @@ exports.main = async (event, context) => {
       return await addTestPlayers(event);
     case "createTestGame":
       return await createTestGame(event);
+    case "fixUserStats":
+      return await fixUserStats(event);
     
     default:
       return { success: false, message: '未知的操作类型' };

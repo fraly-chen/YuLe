@@ -16,6 +16,14 @@ Page({
       'playing': '进行中',
       'finished': '已结束'
     },
+    // 折叠展开状态
+    userExpanded: false,
+    gameExpanded: false,
+    // 编辑资料相关
+    showNicknameModal: false,
+    showLevelModal: false,
+    editNickname: '',
+    levelOptions: ['L1 入门', 'L2 初级', 'L3 中级', 'L4 中高级', 'L5 高级', 'L6 专业'],
     // 登录弹窗相关
     showLoginModal: false,
     tempAvatarUrl: '',
@@ -56,15 +64,137 @@ Page({
     }
   },
 
-  // 用户卡片点击事件
-  onUserCardClick() {
-    // 已登录时无操作
+  // 点击顶部Banner区域 - 折叠其他区域
+  onToggleBanner() {
+    this.setData({
+      userExpanded: false,
+      gameExpanded: false
+    });
+  },
+
+  // 切换用户卡片展开/收起
+  onToggleUserCard() {
+    const newExpanded = !this.data.userExpanded;
+    this.setData({
+      userExpanded: newExpanded,
+      gameExpanded: false  // 折叠球局区域
+    });
+  },
+
+  // 切换球局区域展开/收起
+  onToggleGameSection() {
+    const newExpanded = !this.data.gameExpanded;
+    this.setData({
+      gameExpanded: newExpanded,
+      userExpanded: false  // 折叠用户卡片
+    });
   },
 
   // 跳转编辑资料页面
   onEditProfile() {
-    wx.navigateTo({
-      url: '/pages/profile/profile'
+    // 已移除，编辑功能在当前页面完成
+  },
+
+  // 阻止事件冒泡
+  stopPropagation() {},
+
+  // 选择头像（编辑资料）
+  onChooseAvatarProfile() {
+    const that = this;
+    wx.chooseMedia({
+      count: 1,
+      mediaType: ['image'],
+      sourceType: ['album', 'camera'],
+      success(res) {
+        const tempFilePath = res.tempFiles[0].tempFilePath;
+        that.setData({
+          'userInfo.avatarUrl': tempFilePath
+        });
+        app.globalData.userInfo.avatarUrl = tempFilePath;
+      }
+    });
+  },
+
+  // 编辑昵称
+  onEditNickname() {
+    this.setData({
+      showNicknameModal: true,
+      editNickname: this.data.userInfo.nickName || ''
+    });
+  },
+
+  onCloseNicknameModal() {
+    this.setData({ showNicknameModal: false });
+  },
+
+  onEditNicknameInput(e) {
+    this.setData({ editNickname: e.detail.value });
+  },
+
+  onConfirmNickname() {
+    const { editNickname } = this.data;
+    if (editNickname.trim()) {
+      this.setData({
+        'userInfo.nickName': editNickname.trim(),
+        showNicknameModal: false
+      });
+      app.globalData.userInfo.nickName = editNickname.trim();
+    } else {
+      wx.showToast({ title: '请输入姓名', icon: 'none' });
+    }
+  },
+
+  // 选择性别
+  onSelectGender(e) {
+    const gender = parseInt(e.currentTarget.dataset.gender);
+    this.setData({ 'userInfo.gender': gender });
+    app.globalData.userInfo.gender = gender;
+  },
+
+  // 选择级别
+  onSelectLevel() {
+    this.setData({ showLevelModal: true });
+  },
+
+  onCloseLevelModal() {
+    this.setData({ showLevelModal: false });
+  },
+
+  onConfirmLevel(e) {
+    const level = e.currentTarget.dataset.level;
+    this.setData({
+      'userInfo.level': level,
+      showLevelModal: false
+    });
+    app.globalData.userInfo.level = level;
+  },
+
+  // 保存资料
+  onSaveProfile() {
+    const { userInfo } = this.data;
+    
+    wx.showLoading({ title: '保存中...' });
+    
+    wx.cloud.callFunction({
+      name: 'quickstartFunctions',
+      data: {
+        type: 'updateUserInfo',
+        userInfo: userInfo,
+        openid: app.globalData.openid
+      },
+      success: (res) => {
+        wx.hideLoading();
+        // 更新本地登录态
+        app.saveLoginState(app.globalData.openid, userInfo);
+        wx.showToast({ title: '保存成功', icon: 'success' });
+      },
+      fail: (err) => {
+        wx.hideLoading();
+        console.error('保存失败:', err);
+        // 仍然更新本地登录态
+        app.saveLoginState(app.globalData.openid, userInfo);
+        wx.showToast({ title: '保存成功', icon: 'success' });
+      }
     });
   },
 
@@ -168,12 +298,16 @@ Page({
       success: (res) => {
         wx.hideLoading();
         wx.showToast({ title: '登录成功', icon: 'success' });
+        // 保存登录态到本地存储
+        app.saveLoginState(openid, userInfo);
         that.loadGameList();
         that.loadUserStats();
       },
       fail: (err) => {
         wx.hideLoading();
         console.error('保存用户信息失败:', err);
+        // 仍然保存登录态
+        app.saveLoginState(openid, userInfo);
         wx.showToast({ title: '登录成功', icon: 'success' });
         that.loadGameList();
         that.loadUserStats();
@@ -427,6 +561,39 @@ Page({
       },
       fail(err) {
         console.error('加载统计失败:', err);
+      }
+    });
+  },
+
+  // 修复历史战绩数据
+  onFixStats() {
+    wx.showLoading({ title: '修复中...' });
+    const that = this;
+    wx.cloud.callFunction({
+      name: 'quickstartFunctions',
+      data: {
+        type: 'fixUserStats',
+        openid: app.globalData.openid
+      },
+      success(res) {
+        wx.hideLoading();
+        if (res.result && res.result.success) {
+          that.setData({
+            stats: res.result.stats
+          });
+          wx.showToast({ 
+            title: `已修复: ${res.result.stats.totalWins}胜/${res.result.stats.totalGames}场`, 
+            icon: 'none',
+            duration: 2000
+          });
+        } else {
+          wx.showToast({ title: '修复失败', icon: 'none' });
+        }
+      },
+      fail(err) {
+        wx.hideLoading();
+        console.error('修复失败:', err);
+        wx.showToast({ title: '修复失败', icon: 'none' });
       }
     });
   },

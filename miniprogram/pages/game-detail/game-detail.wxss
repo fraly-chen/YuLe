@@ -1,6 +1,6 @@
 /* pages/game-detail/game-detail.wxss */
 page {
-  background: #F5F7FA;
+  background: #f8f4e9;
   padding-bottom: 0rpx;
 }
 
@@ -10,7 +10,7 @@ page {
 
 /* 球局头部 */
 .game-header {
-  background: #fff;
+  background: #f8f4e9;
   padding: 30rpx;
   text-align: center;
 }
@@ -34,15 +34,15 @@ page {
 }
 
 .status-card.waiting {
-  background: linear-gradient(135deg, #00BFFF 0%, #46C7FF 100%);
+  background: linear-gradient(135deg, #a55b44 0%, #c1db86 100%);
 }
 
 .status-card.playing {
-  background: linear-gradient(135deg, #9fc48d 0%, #9fc48d 100%);
+  background: linear-gradient(135deg, #6b5f38 0%, #5a8a50 100%);
 }
 
 .status-card.finished {
-  background: linear-gradient(135deg, #90a4ae 0%, #78909c 100%);
+  background: linear-gradient(135deg, #f8f4e9 0%, #3a3000 100%);
 }
 
 .status-content {
@@ -166,9 +166,9 @@ page {
 
 .round-info {
   font-size: 26rpx;
-  color: #4A6FA5;
+  color: #6b5f38;
   padding: 8rpx 20rpx;
-  background: #E8EEF5;
+  background: #f0ead8;
   border-radius: 20rpx;
   font-weight: 500;
 }
@@ -177,7 +177,7 @@ page {
   height: 64rpx;
   line-height: 64rpx;
   padding: 0 36rpx;
-  background: linear-gradient(135deg, #4A6FA5 0%, #5B8DBE 100%);
+  background: linear-gradient(135deg, #a5c44e 0%, #8ab032 100%);
   color: #fff;
   border-radius: 32rpx;
   font-size: 26rpx;
@@ -281,7 +281,7 @@ page {
 }
 
 .participant-extra .gender-icon.male {
-  color: #4A6FA5;
+  color: #6b5f38;
 }
 
 .participant-extra .gender-icon.female {
@@ -370,7 +370,7 @@ page {
 .round-current {
   font-size: 32rpx;
   font-weight: bold;
-  color: #4A6FA5;
+  color: #6b5f38;
 }
 
 .round-total {
@@ -425,8 +425,8 @@ page {
 }
 
 .team-side.clickable:active {
-  background: #E8EEF5;
-  border-color: #4A6FA5;
+  background: #f0ead8;
+  border-color: #6b5f38;
 }
 
 .team-side.winner {
@@ -488,7 +488,7 @@ page {
 
 .player-tag {
   font-size: 22rpx;
-  color: #4A6FA5;
+  color: #6b5f38;
   margin-left: 6rpx;
   flex-shrink: 0;
 }
@@ -520,7 +520,7 @@ page {
 
 .score-text {
   font-size: 24rpx;
-  color: #06d6a0;
+  color: #a5c44e;
   margin-top: 8rpx;
 }
 
@@ -533,7 +533,7 @@ page {
 }
 
 .record-btn {
-  background: linear-gradient(135deg, #4A6FA5 0%, #5B8DBE 100%);
+  background: linear-gradient(135deg, #a5c44e 0%, #8ab032 100%);
   color: #fff;
   font-size: 26rpx;
   padding: 16rpx 40rpx;
@@ -545,7 +545,7 @@ page {
   display: flex;
   align-items: center;
   gap: 8rpx;
-  color: #06d6a0;
+  color: #a5c44e;
   font-size: 26rpx;
 }
 
@@ -581,7 +581,7 @@ page {
 }
 
 .next-round-btn-primary {
-  background: linear-gradient(135deg, #4A6FA5 0%, #5B8DBE 100%);
+  background: linear-gradient(135deg, #a5c44e 0%, #8ab032 100%);
   color: #fff;
   font-size: 32rpx;
   padding: 24rpx 0;
@@ -628,7 +628,7 @@ page {
 }
 
 .view-ranking-btn {
-  background: linear-gradient(135deg, #4A6FA5 0%, #5B8DBE 100%);
+  background: linear-gradient(135deg, #a5c44e 0%, #8ab032 100%);
   color: #fff;
   font-size: 32rpx;
   padding: 24rpx 60rpx;
@@ -643,7 +643,7 @@ page {
 .vs-text {
   font-size: 32rpx;
   font-weight: bold;
-  color: #4A6FA5;
+  color: #6b5f38;
   margin: 0 20rpx;
 }
 
@@ -683,7 +683,7 @@ page {
   bottom: 0;
   left: 0;
   right: 0;
-  background: #fff;
+  background: #f8f4e9;
   padding: 20rpx 30rpx;
   box-shadow: 0 -4rpx 12rpx rgba(0, 0, 0, 0.08);
 }
@@ -691,7 +691,7 @@ page {
 .share-btn {
   width: 100%;
   height: 80rpx;
-  background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+  background: linear-gradient(135deg, #a5c44e 0%, #8ab032 100%);
   color: #fff;
   border-radius: 40rpx;
   font-size: 30rpx;
@@ -722,7 +722,7 @@ page {
 
 .modal-content {
   width: 600rpx;
-  background: #fff;
+  background: #f8f4e9;
   border-radius: 24rpx;
   padding: 40rpx;
 }
@@ -787,7 +787,7 @@ page {
 .submit-result-btn {
   width: 100%;
   height: 88rpx;
-  background: linear-gradient(135deg, #4A6FA5 0%, #5B8DBE 100%);
+  background: linear-gradient(135deg, #a5c44e 0%, #8ab032 100%);
   color: #fff;
   border-radius: 44rpx;
   font-size: 30rpx;

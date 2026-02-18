@@ -18,5 +18,57 @@ App({
         traceUser: true,
       });
     }
+    
+    // 恢复登录态
+    this.restoreLoginState();
   },
+  
+  // 恢复登录态
+  restoreLoginState() {
+    try {
+      const loginData = wx.getStorageSync('loginData');
+      if (loginData) {
+        const { openid, userInfo, loginTime } = loginData;
+        // 登录态有效期: 30天
+        const expireTime = 30 * 24 * 60 * 60 * 1000;
+        if (Date.now() - loginTime < expireTime) {
+          this.globalData.openid = openid;
+          this.globalData.userInfo = userInfo;
+          console.log('登录态已恢复');
+        } else {
+          // 过期清除
+          wx.removeStorageSync('loginData');
+          console.log('登录态已过期');
+        }
+      }
+    } catch (e) {
+      console.error('恢复登录态失败:', e);
+    }
+  },
+  
+  // 保存登录态
+  saveLoginState(openid, userInfo) {
+    try {
+      wx.setStorageSync('loginData', {
+        openid,
+        userInfo,
+        loginTime: Date.now()
+      });
+      console.log('登录态已保存');
+    } catch (e) {
+      console.error('保存登录态失败:', e);
+    }
+  },
+  
+  // 清除登录态
+  clearLoginState() {
+    try {
+      wx.removeStorageSync('loginData');
+      this.globalData.openid = null;
+      this.globalData.userInfo = null;
+      console.log('登录态已清除');
+    } catch (e) {
+      console.error('清除登录态失败:', e);
+    }
+  }
 });

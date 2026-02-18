@@ -1,6 +1,6 @@
 /* pages/final-ranking/final-ranking.wxss */
 page {
-  background: #ffffff;
+  background: #f8f4e9;
   min-height: 100vh;
 }
 
@@ -13,7 +13,7 @@ page {
   position: relative;
   padding: 60rpx 30rpx 40rpx;
   text-align: center;
-  background: linear-gradient(135deg, #00b4d8 0%, #06d6a0 100%);
+  background: linear-gradient(135deg, #6b5f38 0%, #8a7a50 100%);
 }
 
 .header-bg {
@@ -173,7 +173,7 @@ page {
 .stat-rate {
   font-size: 26rpx;
   font-weight: bold;
-  color: #00b4d8;
+  color: #a5c44e;
 }
 
 .stat-rate.champion {

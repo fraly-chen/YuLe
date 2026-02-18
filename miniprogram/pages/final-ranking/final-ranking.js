@@ -107,9 +107,30 @@ Page({
       return b.playCount - a.playCount;
     });
     
-    // 添加排名
+    // 添加排名（胜率相同则同列排名）
     ranking.forEach((p, index) => {
-      p.rank = index + 1;
+      if (index === 0) {
+        p.rank = 1;
+      } else {
+        const prev = ranking[index - 1];
+        // 如果胜率、胜场、参赛次数都相同，则同列排名
+        if (p.winRate === prev.winRate && p.wins === prev.wins && p.playCount === prev.playCount) {
+          p.rank = prev.rank;
+        } else {
+          p.rank = index + 1;
+        }
+      }
+      // 根据排名设置奖牌类型
+      if (p.rank === 1) {
+        p.medal = 'gold';
+        p.medalIcon = '🥇';
+      } else if (p.rank === 2) {
+        p.medal = 'silver';
+        p.medalIcon = '🥈';
+      } else if (p.rank === 3) {
+        p.medal = 'bronze';
+        p.medalIcon = '🥉';
+      }
     });
     
     return ranking;
